@@ -19,6 +19,7 @@
   "homepage": "https://github.com/peterjang0210/Bamazon#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "mysql2": "^1.6.5",
     "sequelize": "^4.42.0"
   }
 }
