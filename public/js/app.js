@@ -59,15 +59,15 @@ const renderCart = function () {
                 <td>$ ${cart[i].quantityOrdered * cart[i].price}</td>
                 <td class="deleteFromCart" id="productID" data-cartIndex=${i}>-</td>
             </tr>`);
-        if(i === cart.length - 1){
+        if (i === cart.length - 1) {
             let orderTotal = 0;
-            for(let j = 0; j < cart.length; j++){
+            for (let j = 0; j < cart.length; j++) {
                 orderTotal += (cart[j].quantityOrdered * cart[j].price);
             }
             $(".modal-body").append(`<div class="orderTotal">Price at Checkout: ${orderTotal}</div>`);
         }
     }
-    if(cart.length === 0){
+    if (cart.length === 0) {
         $(".modal-body").append("Your Cart is Empty");
     }
     $("#cartModal").modal("show");
@@ -79,7 +79,32 @@ const removeFromCart = function () {
     renderCart();
 }
 
+const checkOut = function () {
+    for (let i = 0; i < cart.length; i++) {
+        $.get(`/api/products/${cart[i].id}`).then(function (product) {
+            console.log(product);
+            $.ajax({
+                url: `api/products/${product.id}`,
+                method: "PUT",
+                data: {
+                    product_name: product.product_name,
+                    department_name: product.department_name,
+                    price: product.price,
+                    stock_quantity: product.stock_quantity - cart[i].quantityOrdered
+                }
+            }).then(function () {
+                $(".modalTable").empty();
+                $(".orderTotal").empty();
+                $(".modalTable").append(`<div>Items have been purchased!</div>`);
+                getAllProducts();
+                cart.length = 0;
+            });
+        })
+    }
+}
+
 getAllProducts();
 $("#myCart").on("click", renderCart);
 $(".table").on("click", ".addToCart", addToCart);
 $(".table").on("click", "#productID", removeFromCart);
+$("#checkOut").on("click", checkOut);
