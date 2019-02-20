@@ -12,7 +12,7 @@ module.exports = function (app) {
     app.get("/api/products/:id", function (req, res) {
         db.Product.findOne({
             where: {
-                product_name: req.params.productName
+                id: req.params.id
             }
         }).then(function (data) {
             res.json(data);
