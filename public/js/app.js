@@ -1,6 +1,6 @@
-const render = function(products){
+const render = function (products) {
     $("tbody").empty();
-    for(let i = 0; i < products.length; i++){
+    for (let i = 0; i < products.length; i++) {
         $("tbody").append(
             `<tr>
                 <td><input type="number" class="form-control" id="customerInput"></td>
@@ -13,25 +13,25 @@ const render = function(products){
     }
 }
 
-const getAllProducts = function(){
-    $.get("/api/products").then(function(products){
+const getAllProducts = function () {
+    $.get("/api/products").then(function (products) {
         console.log(products);
         render(products)
     })
 }
 
 const cart = [];
-const addToCart = function() {
+const addToCart = function () {
     const productID = $(this).attr("data-productID");
     console.log(productID)
-    $.get(`/api/products/${productID}`).then(function(product){
-        if($("#customerInput").val() > product.stock_quantity){
+    $.get(`/api/products/${productID}`).then(function (product) {
+        if ($("#customerInput").val() > product.stock_quantity) {
             $(".alertBlock").empty();
             $(".alertBlock").prepend(`<div class="alert alert-danger" role="alert">
             Please enter a number below the stock quantity!
           </div>`);
         }
-        else{
+        else {
             const cartItem = {
                 name: product.product_name,
                 id: product.id,
@@ -47,5 +47,28 @@ const addToCart = function() {
     })
 }
 
+const renderCart = function () {
+    $("tbody").empty();
+    for (let i = 0; i < cart.length; i++) {
+        $("tbody").append(
+            `<tr>
+                <td>${cart[i].name}</td>
+                <td>${cart[i].quantityOrdered}</td>
+                <td>$ ${cart[i].price}</td>
+                <td>$ ${cart[i].quantityOrdered * cart[i].price}</td>
+                <td class="deleteFromCart" data-cartIndex=${i}>-</td>
+            </tr>`);
+        if(i === cart.length - 1){
+            let orderTotal = 0;
+            for(let j = 0; j < cart.length; j++){
+                orderTotal += (cart[j].quantityOrdered * cart[j].price);
+            }
+            $(".modal-body").append(`<div class="orderTotal">Price at Checkout: ${orderTotal}</div>`);
+        }
+    }
+    $("#cartModal").modal("show");
+}
+
 getAllProducts();
+$("#myCart").on("click", renderCart);
 $(".table").on("click", ".addToCart", addToCart);
