@@ -15,7 +15,6 @@ const render = function (products) {
 
 const getAllProducts = function () {
     $.get("/api/products").then(function (products) {
-        console.log(products);
         render(products)
     })
 }
@@ -23,7 +22,6 @@ const getAllProducts = function () {
 const cart = [];
 const addToCart = function () {
     const productID = $(this).attr("data-productID");
-    console.log(productID)
     $.get(`/api/products/${productID}`).then(function (product) {
         if ($("#customerInput").val() > product.stock_quantity) {
             $(".alertBlock").empty();
@@ -82,7 +80,6 @@ const removeFromCart = function () {
 const checkOut = function () {
     for (let i = 0; i < cart.length; i++) {
         $.get(`/api/products/${cart[i].id}`).then(function (product) {
-            console.log(product);
             $.ajax({
                 url: `api/products/${product.id}`,
                 method: "PUT",
@@ -103,8 +100,43 @@ const checkOut = function () {
     }
 }
 
+const getProductsM = function(){
+    $.get("/api/products").then(function(products){
+        renderAllProducts(products);
+    });
+}
+
+const renderAllProducts = function(products){
+    $(".products").empty();
+    $(".products").append(
+        `<table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Amount in Stock</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody class="productTableM">
+            </tbody>
+        </table>`);
+    for(let i = 0; i < products.length; i++){
+        $(".productTableM").append(
+            `<tr>
+                <td>${products[i].id}</td>
+                <td>${products[i].product_name}</td>
+                <td>${products[i].department_name}</td>
+                <td>${products[i].stock_quantity}</td>
+                <td>$ ${products[i].price}</td>
+            </tr>`);
+    }
+}
+
 getAllProducts();
 $("#myCart").on("click", renderCart);
 $(".table").on("click", ".addToCart", addToCart);
 $(".table").on("click", "#productID", removeFromCart);
 $("#checkOut").on("click", checkOut);
+$("#viewProducts").on('click', getProductsM);
