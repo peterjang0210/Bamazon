@@ -1,7 +1,7 @@
 const render = function (products) {
-    $("tbody").empty();
+    $(".productTable").empty();
     for (let i = 0; i < products.length; i++) {
-        $("tbody").append(
+        $(".productTable").append(
             `<tr>
                 <td><input type="number" class="form-control" id="customerInput"></td>
                 <td>${products[i].product_name}</td>
@@ -48,15 +48,16 @@ const addToCart = function () {
 }
 
 const renderCart = function () {
-    $("tbody").empty();
+    $(".modalTable").empty();
+    $(".orderTotal").empty();
     for (let i = 0; i < cart.length; i++) {
-        $("tbody").append(
+        $(".modalTable").append(
             `<tr>
                 <td>${cart[i].name}</td>
                 <td>${cart[i].quantityOrdered}</td>
                 <td>$ ${cart[i].price}</td>
                 <td>$ ${cart[i].quantityOrdered * cart[i].price}</td>
-                <td class="deleteFromCart" data-cartIndex=${i}>-</td>
+                <td class="deleteFromCart" id="productID" data-cartIndex=${i}>-</td>
             </tr>`);
         if(i === cart.length - 1){
             let orderTotal = 0;
@@ -66,9 +67,19 @@ const renderCart = function () {
             $(".modal-body").append(`<div class="orderTotal">Price at Checkout: ${orderTotal}</div>`);
         }
     }
+    if(cart.length === 0){
+        $(".modal-body").append("Your Cart is Empty");
+    }
     $("#cartModal").modal("show");
+}
+
+const removeFromCart = function () {
+    const cartIndex = $(this).attr("data-cartIndex");
+    cart.splice(cartIndex, 1);
+    renderCart();
 }
 
 getAllProducts();
 $("#myCart").on("click", renderCart);
 $(".table").on("click", ".addToCart", addToCart);
+$(".table").on("click", "#productID", removeFromCart);
