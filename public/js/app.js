@@ -3,9 +3,8 @@ const render = function (products) {
     for (let i = 0; i < products.length; i++) {
         $(".productTable").append(
             `<tr>
-                <td><input type="number" class="form-control" id="customerInput"></td>
+                <td><input type="number" class="form-control" id="customerInput${i + 1}"></td>
                 <td>${products[i].product_name}</td>
-                <td>${products[i].department_name}</td>
                 <td>${products[i].stock_quantity}</td>
                 <td>$ ${products[i].price}</td>
                 <td class="addToCart" data-productID=${products[i].id}>+</td>
@@ -33,14 +32,14 @@ const addToCart = function () {
             const cartItem = {
                 name: product.product_name,
                 id: product.id,
-                quantityOrdered: $("#customerInput").val(),
+                quantityOrdered: $(`#customerInput${product.id}`).val(),
                 price: product.price
             }
             cart.push(cartItem);
             $(".alertBlock").empty();
             $(".alertBlock").prepend(`<div class="alert alert-success" role="alert">
-            Your item has been added to the cart!
-          </div>`);
+            Your item has been added to the cart!</div>`);
+            $(`#customerInput${product.id}`).val("");
         }
     })
 }
@@ -51,8 +50,8 @@ const renderCart = function () {
     for (let i = 0; i < cart.length; i++) {
         $(".modalTable").append(
             `<tr>
-                <td>${cart[i].name}</td>
                 <td>${cart[i].quantityOrdered}</td>
+                <td>${cart[i].name}</td>
                 <td>$ ${cart[i].price}</td>
                 <td>$ ${cart[i].quantityOrdered * cart[i].price}</td>
                 <td class="deleteFromCart" id="productID" data-cartIndex=${i}>-</td>
@@ -62,7 +61,7 @@ const renderCart = function () {
             for (let j = 0; j < cart.length; j++) {
                 orderTotal += (cart[j].quantityOrdered * cart[j].price);
             }
-            $(".modal-body").append(`<div class="orderTotal">Price at Checkout: ${orderTotal}</div>`);
+            $(".modal-body").append(`<div class="orderTotal">Price at Checkout: $${orderTotal}</div>`);
         }
     }
     if (cart.length === 0) {
@@ -100,13 +99,22 @@ const checkOut = function () {
     }
 }
 
-const getProductsM = function(){
-    $.get("/api/products").then(function(products){
-        renderAllProducts(products);
+const getProductsM = function () {
+    console.log(this);
+    console.log(this.id);
+    const id = this.id;
+    $.get("/api/products").then(function (products) {
+        if(id === "viewProducts"){
+            renderAllProducts(products);
+        }
+        else if(id === "viewLowInven"){
+            renderLowProducts(products);
+        }
     });
+
 }
 
-const renderAllProducts = function(products){
+const renderAllProducts = function (products) {
     $(".products").empty();
     $(".products").append(
         `<table class="table">
@@ -122,7 +130,7 @@ const renderAllProducts = function(products){
             <tbody class="productTableM">
             </tbody>
         </table>`);
-    for(let i = 0; i < products.length; i++){
+    for (let i = 0; i < products.length; i++) {
         $(".productTableM").append(
             `<tr>
                 <td>${products[i].id}</td>
@@ -134,9 +142,39 @@ const renderAllProducts = function(products){
     }
 }
 
+const renderLowProducts = function (products) {
+    $(".products").empty();
+    $(".products").append(
+        `<table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Amount in Stock</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody class="productTableM">
+            </tbody>
+        </table>`);
+    for (let i = 0; i < products.length; i++) {
+        if (products[i].stock_quantity < 5) {
+            $(".productTableM").append(
+                `<tr>
+                    <td>${products[i].id}</td>
+                    <td>${products[i].product_name}</td>
+                    <td>${products[i].department_name}</td>
+                    <td>${products[i].stock_quantity}</td>
+                    <td>$ ${products[i].price}</td>
+                </tr>`);
+        }
+    }
+}
+
 getAllProducts();
 $("#myCart").on("click", renderCart);
 $(".table").on("click", ".addToCart", addToCart);
 $(".table").on("click", "#productID", removeFromCart);
 $("#checkOut").on("click", checkOut);
-$("#viewProducts").on('click', getProductsM);
+$(".getProducts").on('click', getProductsM);
