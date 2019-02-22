@@ -3,11 +3,11 @@ const render = function (products) {
     for (let i = 0; i < products.length; i++) {
         $(".productTable").append(
             `<tr>
-                <td><input type="number" class="form-control" id="customerInput${i + 1}"></td>
-                <td>${products[i].product_name}</td>
-                <td>${products[i].stock_quantity}</td>
-                <td>$ ${products[i].price}</td>
-                <td class="addToCart" data-productID=${products[i].id}>+</td>
+                <td><input type="number" class="form-control align-middle" id="customerInput${i + 1}"></td>
+                <td class="align-middle">${products[i].product_name}</td>
+                <td class="align-middle">${products[i].stock_quantity}</td>
+                <td class="align-middle">$ ${products[i].price}</td>
+                <td class="addToCart align-middle" data-productID=${products[i].id}>+</td>
             </tr>`);
     }
 }
@@ -22,7 +22,7 @@ const cart = [];
 const addToCart = function () {
     const productID = $(this).attr("data-productID");
     $.get(`/api/products/${productID}`).then(function (product) {
-        if ($(`#customerInput${product.id}`).val() > product.stock_quantity || $(`#customerInput${product.id}`).val() === "") {
+        if ($(`#customerInput${product.id}`).val() > product.stock_quantity || $(`#customerInput${product.id}`).val() === "" || $(`#customerInput${product.id}`).val() < 0) {
             $(".alertBlock").empty();
             $(".alertBlock").prepend(`<div class="alert alert-danger" role="alert">
             Please enter a number below the stock quantity!
@@ -50,22 +50,23 @@ const renderCart = function () {
     for (let i = 0; i < cart.length; i++) {
         $(".modalTable").append(
             `<tr>
-                <td>${cart[i].quantityOrdered}</td>
-                <td>${cart[i].name}</td>
-                <td>$ ${cart[i].price}</td>
-                <td>$ ${cart[i].quantityOrdered * cart[i].price}</td>
-                <td class="deleteFromCart" id="productID" data-cartIndex=${i}>-</td>
+                <td class="align-middle">${cart[i].quantityOrdered}</td>
+                <td class="align-middle">${cart[i].name}</td>
+                <td class="align-middle">$ ${cart[i].price}</td>
+                <td class="align-middle">$ ${cart[i].quantityOrdered * cart[i].price}</td>
+                <td class="deleteFromCart align-middle" id="productID" data-cartIndex=${i}>-</td>
             </tr>`);
         if (i === cart.length - 1) {
             let orderTotal = 0;
             for (let j = 0; j < cart.length; j++) {
                 orderTotal += (cart[j].quantityOrdered * cart[j].price);
             }
+            $(".modalStatus").empty();
             $(".modal-body").append(`<div class="orderTotal">Price at Checkout: $${orderTotal}</div>`);
         }
     }
     if (cart.length === 0) {
-        $(".modal-body").append("Your Cart is Empty");
+        $(".modal-body").append(`<div class="modalStatus">Your Cart is Empty</div>`);
     }
     $("#cartModal").modal("show");
 }
@@ -136,10 +137,10 @@ const renderAllProducts = function (products) {
     for (let i = 0; i < products.length; i++) {
         $(".productTableM").append(
             `<tr>
-                <td>${products[i].id}</td>
-                <td>${products[i].product_name}</td>
-                <td>${products[i].stock_quantity}</td>
-                <td>$ ${products[i].price}</td>
+                <td class="align-middle">${products[i].id}</td>
+                <td class="align-middle">${products[i].product_name}</td>
+                <td class="align-middle">${products[i].stock_quantity}</td>
+                <td class="align-middle">$ ${products[i].price}</td>
             </tr>`);
     }
 }
@@ -163,10 +164,10 @@ const renderLowProducts = function (products) {
         if (products[i].stock_quantity < 5) {
             $(".productTableM").append(
                 `<tr>
-                    <td>${products[i].id}</td>
-                    <td>${products[i].product_name}</td>
-                    <td>${products[i].stock_quantity}</td>
-                    <td>$ ${products[i].price}</td>
+                    <td class="align-middle">${products[i].id}</td>
+                    <td class="align-middle">${products[i].product_name}</td>
+                    <td class="align-middle">${products[i].stock_quantity}</td>
+                    <td class="align-middle">$ ${products[i].price}</td>
                 </tr>`);
         }
     }
@@ -183,7 +184,7 @@ const renderAddInven = function (products) {
                     <th scope="col">Product Name</th>
                     <th scope="col">Amount in Stock</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Add</th>
+                    <th scope="col" class="add">Add</th>
                 </tr>
             </thead>
             <tbody class="productTableM">
@@ -192,12 +193,12 @@ const renderAddInven = function (products) {
     for (let i = 0; i < products.length; i++) {
         $(".productTableM").append(
             `<tr>
-                <td><input type="number" class="form-control" id="managerInput${i + 1}"></td>
-                <td>${products[i].id}</td>
-                <td>${products[i].product_name}</td>
-                <td>${products[i].stock_quantity}</td>
-                <td>$ ${products[i].price}</td>
-                <td class="addToInven" data-productID=${products[i].id}>+</td>
+                <td><input type="number" class="form-control align-middle" id="managerInput${i + 1}"></td>
+                <td class="align-middle">${products[i].id}</td>
+                <td class="align-middle">${products[i].product_name}</td>
+                <td class="align-middle">${products[i].stock_quantity}</td>
+                <td class="align-middle">$ ${products[i].price}</td>
+                <td class="addToInven align-middle" data-productID=${products[i].id}>+</td>
             </tr>`);
     }
 }
@@ -243,21 +244,21 @@ const renderNewProduct = function () {
         <form>
             <div class="form-group">
                 <label for="productName">Product Name</label>
-                <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+                <input type="text" class="form-control newInput" id="productName" placeholder="Enter product name">
             </div>
             <div class="form-group">
                 <label for="departmentName">Department Name</label>
-                <input type="text" class="form-control" id="departmentName" placeholder="Enter department name">
+                <input type="text" class="form-control newInput" id="departmentName" placeholder="Enter department name">
             </div>
             <div class="form-group">
                 <label for="stockQuantity">Quantity to Stock</label>
-                <input type="number" class="form-control" id="stockQuantity" placeholder="Enter quantity">
+                <input type="number" class="form-control newInput" id="stockQuantity" placeholder="Enter quantity">
             </div>
             <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" placeholder="Enter price">
+                <input type="number" class="form-control newInput" id="price" placeholder="Enter price">
             </div>
-            <button type="button" class="btn btn-primary" id="addBtn">Add</button>
+            <button type="button" class="btn btn-warning" id="addBtn">Add</button>
         </form>`);
 }
 

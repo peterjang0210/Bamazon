@@ -1,0 +1,107 @@
+html{
+    height: 100%;
+}
+
+body{
+    font-family: 'B612', sans-serif;
+    background-image: url("../Images/background-board-brown-326311.jpg");
+    min-height:100%; 
+    position:relative; 
+    padding-bottom: 60px;
+}
+
+h1{
+    padding: 5px;
+    color: #ffffff;
+    box-sizing: border-box;
+    margin-bottom: -20px;
+}
+
+h2{
+    color: #ffffff;
+}
+
+.dropdown, .homeNav{
+    float: right;
+    margin-top: -25px;
+}
+
+.dropdown-item, #managerView, #myCart{
+    color: #ffffff;
+}
+
+.dropdown-item:hover, #managerView:hover, #myCart:hover{
+    cursor: pointer;
+    color: #f0c14b;
+}
+
+thead{
+    background-color: #111111;
+    color: #ffffff;
+}
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+}
+
+.alert, .table{
+    animation-duration: .5s;
+    animation-name: fadeIn;
+}
+
+.add, .remove{
+    text-align: center;
+}
+
+td{
+    background-color: #f4f7f5;
+}
+
+.addToCart, .deleteFromCart, .addToInven{
+    background-color: #f0c14b;
+    text-align: center;
+    transition: background-color .5s ease-in;
+}
+
+.addToCart:hover, .deleteFromCart:hover, .addToInven:hover{
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+form{
+    padding-top: 20px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+
+label{
+    color: #ffffff;
+}
+
+.form-control{
+    width: 100px;
+}
+
+.newInput{
+    width: 400px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #111111;
+    color: #ffffff;    
+    min-width: 100%;
+    margin-top: 60px;
+    padding-top: 15px;
+    text-align: center;
+    position: absolute; 
+    left: 0 ; right: 0; bottom: 0; 
+}

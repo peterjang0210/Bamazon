@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=B612" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Bamazon Manager View</title>
 </head>
 
@@ -15,27 +17,27 @@
         <header>
             <h1>Bamazon Manager View</h1>
             <nav>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link active getProducts" id="viewProducts">View Products for Sale</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active getProducts" id="viewLowInven">View Low Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active getProducts" id="addToInven">Add to Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active getProducts" id="addNewProd">Add New Product</a>
-                    </li>
-                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item getProducts" id="viewProducts">View Products for Sale</a>
+                        <a class="dropdown-item getProducts" id="viewLowInven">View Low Inventory</a>
+                        <a class="dropdown-item getProducts" id="addToInven">Add to Inventory</a>
+                        <a class="dropdown-item getProducts" id="addNewProd">Add New Product</a>
+                    </div>
+                </div>
             </nav>
         </header>
+        <hr>
 
         <body>
             <div class="products">
                 <div class="alertBlock"></div>
-                <div class="tableBlock"></div>
+                <div class="tableBlock">
+                </div>
             </div>
         </body>
     </main>
@@ -43,6 +45,7 @@
     <footer class="footer py-3">
         <span class="text-muted">Copyright ©</span>
     </footer>
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
