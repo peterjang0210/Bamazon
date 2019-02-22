@@ -26,13 +26,17 @@ h2{
     margin-top: -25px;
 }
 
-.dropdown-item, #managerView, #myCart{
+#managerView, #myCart{
     color: #ffffff;
 }
 
-.dropdown-item:hover, #managerView:hover, #myCart:hover{
+#managerView:hover, #myCart:hover{
     cursor: pointer;
     color: #f0c14b;
+}
+
+.dropdown-item:hover{
+    cursor: pointer;
 }
 
 thead{
