@@ -66,6 +66,7 @@ const renderCart = function () {
         }
     }
     if (cart.length === 0) {
+        $(".modalStatus").empty();
         $(".modal-body").append(`<div class="modalStatus">Your Cart is Empty</div>`);
     }
     $("#cartModal").modal("show");
