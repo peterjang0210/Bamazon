@@ -16,3 +16,6 @@ Back End
 
 ## Future Development
 The most obvious direction for future development is to have users create profiles where they can "load" money to spend on the application. Because it is a low level imitation of amazon, the features found on amazon.com could be replicated on this webpage at a basic level.
+
+## Deployed Link
+[Bamazon](https://secure-caverns-63801.herokuapp.com/)
